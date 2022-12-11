@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-bc36-practice/static/css/main.1e75175e.css",
+    "main.js": "/react-bc36-practice/static/js/main.a5b8d95c.js",
+    "index.html": "/react-bc36-practice/index.html",
+    "main.1e75175e.css.map": "/react-bc36-practice/static/css/main.1e75175e.css.map",
+    "main.a5b8d95c.js.map": "/react-bc36-practice/static/js/main.a5b8d95c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e75175e.css",
+    "static/js/main.a5b8d95c.js"
+  ]
+}
