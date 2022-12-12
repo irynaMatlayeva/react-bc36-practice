@@ -1,7 +1,9 @@
+import { Sidebar } from '../components';
+
 const App = () => {
   return (
-    <div className='app'>
-      <div>Sidebar</div>
+    <div className="app">
+      <Sidebar />
       <div>Main</div>
     </div>
   );
