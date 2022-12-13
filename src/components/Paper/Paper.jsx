@@ -1,8 +1,8 @@
 import css from './Paper.module.css';
 
-const Paper = ({ children, ...otherProps }) => {
+const Paper = ({ children, classes, ...otherProps }) => {
   return (
-    <div className={css.paper} {...otherProps}>
+    <div className={`${css.paper} ${classes}`} {...otherProps}>
       {children}
     </div>
   );
