@@ -1,4 +1,10 @@
-import { Sidebar, Main, Paper, UniversityCard } from '../components';
+import {
+  Sidebar,
+  Main,
+  Paper,
+  UniversityCard,
+  TutorsList,
+} from '../components';
 import universityData from '../constants/universityData.json';
 
 const App = () => {
@@ -21,6 +27,7 @@ const App = () => {
         <Paper>
           <span>{universityData.description}</span>
         </Paper>
+        <TutorsList tutors={universityData.tutors} />
       </Main>
     </div>
   );

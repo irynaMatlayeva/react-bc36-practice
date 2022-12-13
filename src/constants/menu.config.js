@@ -1,16 +1,15 @@
-import DepartmentIcon from '../assets/images/faculties-icon.svg';
-import UniversityIcon from '../assets/images/university-icon.svg';
+import { HiBookOpen, HiAcademicCap } from 'react-icons/hi';
 
 export const menuConfig = [
   {
     name: 'University',
     link: '/',
-    image: UniversityIcon,
+    image: <HiBookOpen color="#ff6b0a" size={19} />,
   },
 
   {
     name: 'Departments',
     link: '/',
-    image: DepartmentIcon,
+    image: <HiAcademicCap color="#ff6b0a" size={19} />,
   },
 ];

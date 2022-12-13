@@ -1,7 +1,7 @@
 const MenuItem = ({ name, link, image }) => (
   <li>
     <a href={link}>
-      <img src={image} alt={name} />
+      {image}
       {name}
     </a>
   </li>
