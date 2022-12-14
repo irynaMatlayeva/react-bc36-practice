@@ -4,3 +4,5 @@ export { default as Paper } from './Paper/Paper.jsx';
 export { default as UniversityCard } from './UniversityCard/UniversityCard.jsx';
 export { default as TutorsList } from './Tutors/TutorsList';
 export { default as Section } from './Section/Section';
+export { default as Button } from './Button/Button';
+export { default as GeneralCardList } from './GeneralCard/GeneralCardList';
