@@ -1,4 +1,5 @@
 import { Paper } from 'components';
+import PropTypes from 'prop-types';
 import { ColumnItem, Container } from './TutorsItem.styled';
 import PhoneImg from '../../assets/images/phone.svg';
 import MailImg from '../../assets/images/mail.svg';
@@ -44,3 +45,13 @@ const TutorsItem = ({
 };
 
 export default TutorsItem;
+
+TutorsItem.propTypes = {
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  patronymic: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  city: PropTypes.string.isRequired,
+  options: PropTypes.string,
+};
