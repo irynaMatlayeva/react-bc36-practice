@@ -8,6 +8,7 @@ import {
   Button,
   Section,
   GeneralCardList,
+  TutorForm,
 } from '../components';
 
 import universityData from '../constants/universityData.json';
@@ -21,8 +22,19 @@ class App extends React.Component {
   state = {
     tutors: universityData?.tutors ?? [],
     cities: universityData?.cities.map(city => ({ text: city })) ?? [],
-    departments:
-      universityData?.department.map(({ name }) => ({ text: name })) ?? [],
+    departments: universityData?.department.map(({ name }) => ({ text: name })) ?? [],
+  };
+
+  addTutor = tutor => {
+    this.setState(({ tutors }) => {
+      return { tutors: [...tutors, tutor] };
+    });
+  };
+
+  deleteTutor = name => {
+    this.setState(({ tutors }) => {
+      return { tutors: [...tutors].filter(({ firstName }) => firstName !== name) };
+    });
   };
 
   onEdit = () => {
@@ -44,11 +56,7 @@ class App extends React.Component {
       <div className="app">
         <Sidebar />
         <Main>
-          <Section
-            title="Information about university"
-            isColumn
-            isRightPosition
-          >
+          <Section title="Information about university" isColumn isRightPosition>
             <UniversityCard
               name={universityData.name}
               onEdit={this.onEdit}
@@ -59,26 +67,13 @@ class App extends React.Component {
             </Paper>
           </Section>
           <Section title="Tutors" image={TutorIcon}>
-            <TutorsList tutors={this.state.tutors} />
-            <Button
-              text="add tutor"
-              image={AddIcon}
-              action={this.handleShowForm}
-            />
+            <TutorsList tutors={this.state.tutors} deleteTutor={this.deleteTutor} />
+            <TutorForm addTutor={this.addTutor} />
+            <Button text="add tutor" image={AddIcon} action={this.handleShowForm} />
           </Section>
           <Section title="cities" image={CitiesIcon}>
-            <GeneralCardList
-              listData={this.state.cities}
-              isOpenMenu={this.handleToogleMenu}
-            />
+            <GeneralCardList listData={this.state.cities} isOpenMenu={this.handleToogleMenu} />
             <Button text="add city" image={AddIcon} />
-          </Section>
-          <Section title="department" image={DepartmentIcon}>
-            <GeneralCardList
-              listData={this.state.departments}
-              isOpenMenu={this.handleToogleMenu}
-            />
-            <Button text="add department" image={AddIcon} />
           </Section>
         </Main>
       </div>
