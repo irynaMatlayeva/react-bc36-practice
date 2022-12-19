@@ -7,3 +7,4 @@ export { default as Section } from './Section/Section';
 export { default as Button } from './Button/Button';
 export { default as GeneralCardList } from './GeneralCard/GeneralCardList';
 export { default as TutorForm } from './Forms/TutorForm/TutorForm';
+export { default as AddItemForm } from './Forms/AddItemForm/AddItemForm';
