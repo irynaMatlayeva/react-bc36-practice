@@ -9,7 +9,9 @@ import {
   Section,
   GeneralCardList,
   TutorForm,
+  AddItemForm,
 } from '../components';
+import FORMS from '../constants/forms';
 
 import universityData from '../constants/universityData.json';
 
@@ -23,6 +25,7 @@ class App extends React.Component {
     tutors: universityData?.tutors ?? [],
     cities: universityData?.cities.map(city => ({ text: city })) ?? [],
     departments: universityData?.department.map(({ name }) => ({ text: name })) ?? [],
+    showForm: null,
   };
 
   addTutor = tutor => {
@@ -44,13 +47,45 @@ class App extends React.Component {
     console.log('delete');
   };
 
-  handleShowForm = () => {
-    console.log('form');
+  handleShowForm = formName => {
+    this.setState(prevState => ({
+      showForm: prevState.showForm === formName ? null : formName,
+    }));
   };
 
   handleToogleMenu = () => {
     console.log('card');
   };
+
+  addCity = name => {
+    if (this.state.cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
+      alert('City exists');
+    } else {
+      const newCity = {
+        text: name,
+      };
+      this.setState(prevState => ({
+        cities: [...prevState.cities, newCity],
+      }));
+    }
+  };
+  addDepartment = name => {
+    if (
+      this.state.departments.some(
+        department => department.text.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert('Department exists');
+    } else {
+      const newDepartment = {
+        text: name,
+      };
+      this.setState(prevState => ({
+        departments: [...prevState.departments, newDepartment],
+      }));
+    }
+  };
+
   render() {
     return (
       <div className="app">
@@ -68,12 +103,42 @@ class App extends React.Component {
           </Section>
           <Section title="Tutors" image={TutorIcon}>
             <TutorsList tutors={this.state.tutors} deleteTutor={this.deleteTutor} />
-            <TutorForm addTutor={this.addTutor} />
-            <Button text="add tutor" image={AddIcon} action={this.handleShowForm} />
+            {this.state.showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={this.addTutor} />}
+
+            <Button
+              text={this.state.showForm === FORMS.TUTOR_FORM ? 'Close form' : 'Add tutor'}
+              image={AddIcon}
+              action={() => this.handleShowForm(FORMS.TUTOR_FORM)}
+            />
           </Section>
-          <Section title="cities" image={CitiesIcon}>
+          <Section title="Cities" image={CitiesIcon}>
             <GeneralCardList listData={this.state.cities} isOpenMenu={this.handleToogleMenu} />
-            <Button text="add city" image={AddIcon} />
+            {this.state.showForm === FORMS.CITY_FORM && (
+              <AddItemForm onSubmit={this.addCity} title="Add city" placeholder="City" />
+            )}
+            <Button
+              text={this.state.showForm === FORMS.CITY_FORM ? 'Close form' : 'Add city'}
+              image={AddIcon}
+              action={() => this.handleShowForm(FORMS.CITY_FORM)}
+            />
+          </Section>
+          <Section title="Departments" image={DepartmentIcon}>
+            <GeneralCardList listData={this.state.departments} isOpenMenu={this.handleToogleMenu} />
+            {this.state.showForm === FORMS.DEPARTMENTS_FORM && (
+              <AddItemForm
+                onSubmit={this.addDepartment}
+                title="Add department"
+                placeholder="Department"
+              />
+            )}
+
+            <Button
+              text={
+                this.state.showForm === FORMS.DEPARTMENTS_FORM ? 'Close form' : 'Add department'
+              }
+              image={AddIcon}
+              action={() => this.handleShowForm(FORMS.DEPARTMENTS_FORM)}
+            />
           </Section>
         </Main>
       </div>
