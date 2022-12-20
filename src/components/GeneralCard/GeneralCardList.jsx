@@ -1,13 +1,20 @@
 import GeneralCardItem from './GeneralCardItem';
+import { StyledList } from './GeneralCardItem.styled';
 
-const GeneralCardList = ({ listData, isOpenMenu }) => {
+const GeneralCardList = ({ listData, deleteCard }) => {
   return (
-    <ul>
+    <StyledList>
       {listData.length > 0 &&
-        listData.map(({ text }) => (
-          <GeneralCardItem key={text} text={text} isOpenMenu={isOpenMenu} />
+        listData.map(({ text, relation }) => (
+          <GeneralCardItem
+            id={text}
+            key={text}
+            relation={relation}
+            text={text}
+            deleteCard={deleteCard}
+          />
         ))}
-    </ul>
+    </StyledList>
   );
 };
 

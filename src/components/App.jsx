@@ -23,8 +23,16 @@ import DepartmentIcon from '../assets/images/faculties-icon.svg';
 class App extends React.Component {
   state = {
     tutors: universityData?.tutors ?? [],
-    cities: universityData?.cities.map(city => ({ text: city })) ?? [],
-    departments: universityData?.department.map(({ name }) => ({ text: name })) ?? [],
+    cities:
+      universityData?.cities.map(city => ({
+        text: city,
+        relation: 'cities',
+      })) ?? [],
+    departments:
+      universityData?.department.map(({ name }) => ({
+        text: name,
+        relation: 'departments',
+      })) ?? [],
     showForm: null,
   };
 
@@ -36,7 +44,9 @@ class App extends React.Component {
 
   deleteTutor = name => {
     this.setState(({ tutors }) => {
-      return { tutors: [...tutors].filter(({ firstName }) => firstName !== name) };
+      return {
+        tutors: [...tutors].filter(({ firstName }) => firstName !== name),
+      };
     });
   };
 
@@ -53,12 +63,12 @@ class App extends React.Component {
     }));
   };
 
-  handleToogleMenu = () => {
-    console.log('card');
-  };
-
   addCity = name => {
-    if (this.state.cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
+    if (
+      this.state.cities.some(
+        city => city.text.toLowerCase() === name.toLowerCase()
+      )
+    ) {
       alert('City exists');
     } else {
       const newCity = {
@@ -86,12 +96,22 @@ class App extends React.Component {
     }
   };
 
+  handleDeleteCard = (id, relation) => {
+    this.setState(prevState => ({
+      [relation]: prevState[relation].filter(({ text }) => text !== id),
+    }));
+  };
+
   render() {
     return (
       <div className="app">
         <Sidebar />
         <Main>
-          <Section title="Information about university" isColumn isRightPosition>
+          <Section
+            title="Information about university"
+            isColumn
+            isRightPosition
+          >
             <UniversityCard
               name={universityData.name}
               onEdit={this.onEdit}
@@ -102,28 +122,51 @@ class App extends React.Component {
             </Paper>
           </Section>
           <Section title="Tutors" image={TutorIcon}>
-            <TutorsList tutors={this.state.tutors} deleteTutor={this.deleteTutor} />
-            {this.state.showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={this.addTutor} />}
+            <TutorsList
+              tutors={this.state.tutors}
+              deleteTutor={this.deleteTutor}
+            />
+            {this.state.showForm === FORMS.TUTOR_FORM && (
+              <TutorForm addTutor={this.addTutor} />
+            )}
 
             <Button
-              text={this.state.showForm === FORMS.TUTOR_FORM ? 'Close form' : 'Add tutor'}
+              text={
+                this.state.showForm === FORMS.TUTOR_FORM
+                  ? 'Close form'
+                  : 'Add tutor'
+              }
               image={AddIcon}
               action={() => this.handleShowForm(FORMS.TUTOR_FORM)}
             />
           </Section>
           <Section title="Cities" image={CitiesIcon}>
-            <GeneralCardList listData={this.state.cities} isOpenMenu={this.handleToogleMenu} />
+            <GeneralCardList
+              listData={this.state.cities}
+              deleteCard={this.handleDeleteCard}
+            />
             {this.state.showForm === FORMS.CITY_FORM && (
-              <AddItemForm onSubmit={this.addCity} title="Add city" placeholder="City" />
+              <AddItemForm
+                onSubmit={this.addCity}
+                title="Add city"
+                placeholder="City"
+              />
             )}
             <Button
-              text={this.state.showForm === FORMS.CITY_FORM ? 'Close form' : 'Add city'}
+              text={
+                this.state.showForm === FORMS.CITY_FORM
+                  ? 'Close form'
+                  : 'Add city'
+              }
               image={AddIcon}
               action={() => this.handleShowForm(FORMS.CITY_FORM)}
             />
           </Section>
           <Section title="Departments" image={DepartmentIcon}>
-            <GeneralCardList listData={this.state.departments} isOpenMenu={this.handleToogleMenu} />
+            <GeneralCardList
+              listData={this.state.departments}
+              deleteCard={this.handleDeleteCard}
+            />
             {this.state.showForm === FORMS.DEPARTMENTS_FORM && (
               <AddItemForm
                 onSubmit={this.addDepartment}
@@ -134,7 +177,9 @@ class App extends React.Component {
 
             <Button
               text={
-                this.state.showForm === FORMS.DEPARTMENTS_FORM ? 'Close form' : 'Add department'
+                this.state.showForm === FORMS.DEPARTMENTS_FORM
+                  ? 'Close form'
+                  : 'Add department'
               }
               image={AddIcon}
               action={() => this.handleShowForm(FORMS.DEPARTMENTS_FORM)}
