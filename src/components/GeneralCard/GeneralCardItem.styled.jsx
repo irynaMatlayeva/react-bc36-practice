@@ -17,7 +17,13 @@ export const StyledItem = styled.li`
 
 export const StyledContainer = styled.div`
   position: absolute;
-  top: ${p => p.y}px;
+  top: ${p => {
+    if (p.y + 112 > p.clientHeight) {
+      return p.y - 112;
+    } else {
+      return p.y;
+    }
+  }}px;
   left: ${p => {
     if (p.x + 232 > p.clientWidth) {
       return p.x - 232;
