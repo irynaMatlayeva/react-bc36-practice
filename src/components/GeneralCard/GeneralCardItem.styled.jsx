@@ -17,8 +17,14 @@ export const StyledItem = styled.li`
 
 export const StyledContainer = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: ${p => p.y}px;
+  left: ${p => {
+    if (p.x + 232 > p.clientWidth) {
+      return p.x - 232;
+    } else {
+      return p.x;
+    }
+  }}px;
   background-color: white;
   width: 232px;
   height: 112px;
@@ -58,4 +64,19 @@ export const StyledButton = styled.button`
   svg {
     margin-right: 25px;
   }
+`;
+
+export const ModalActionContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 300px;
+  max-width: 600px;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 `;
