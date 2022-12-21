@@ -22,18 +22,20 @@ class GeneralCardItem extends React.Component {
       x: 0,
       y: 0,
       clientWidth: 0,
+      clientHeight: 0,
     },
     showModal: null,
   };
 
   showDropDawn = evt => {
-    console.dir(document.documentElement);
+    console.log(evt);
     this.setState({
       showDropDown: true,
       dropDownPosition: {
         x: evt.clientX,
         y: evt.clientY,
         clientWidth: document.documentElement.clientWidth,
+        clientHeight: document.documentElement.clientHeight,
       },
     });
   };
@@ -72,6 +74,7 @@ class GeneralCardItem extends React.Component {
                 x={this.state.dropDownPosition.x}
                 y={this.state.dropDownPosition.y}
                 clientWidth={this.state.dropDownPosition.clientWidth}
+                clientHeight={this.state.dropDownPosition.clientHeight}
               >
                 <StyledButton type="button" onClick={() => this.handleActionBtnClick('edit')}>
                   <EditBtnIcon />
