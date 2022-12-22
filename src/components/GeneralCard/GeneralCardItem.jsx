@@ -54,12 +54,8 @@ class GeneralCardItem extends React.Component {
     this.setState({ showModal: action, showDropDown: false });
   };
 
-  editItem = () => {
-    console.log('Edit Item');
-  };
-
   render() {
-    const { text, id, relation, deleteCard } = this.props;
+    const { text, id, relation, deleteCard, editCard } = this.props;
     // console.log(id, relation);
     return (
       <Paper>
@@ -76,11 +72,17 @@ class GeneralCardItem extends React.Component {
                 clientWidth={this.state.dropDownPosition.clientWidth}
                 clientHeight={this.state.dropDownPosition.clientHeight}
               >
-                <StyledButton type="button" onClick={() => this.handleActionBtnClick('edit')}>
+                <StyledButton
+                  type="button"
+                  onClick={() => this.handleActionBtnClick('edit')}
+                >
                   <EditBtnIcon />
                   Edit
                 </StyledButton>
-                <StyledButton type="button" onClick={() => this.handleActionBtnClick('delete')}>
+                <StyledButton
+                  type="button"
+                  onClick={() => this.handleActionBtnClick('delete')}
+                >
                   <DeleteBtnIcon />
                   Delete
                 </StyledButton>
@@ -91,7 +93,9 @@ class GeneralCardItem extends React.Component {
         {this.state.showModal === 'delete' && (
           <Modal onClose={this.closeModal}>
             <ModalActionContainer>
-              <h2>Delete {relation === 'departments' ? 'department' : 'city'} </h2>
+              <h2>
+                Delete {relation === 'departments' ? 'department' : 'city'}{' '}
+              </h2>
               <button onClick={() => deleteCard(id, relation)}>Yes</button>
               <button onClick={this.closeModal}>No</button>
             </ModalActionContainer>
@@ -101,8 +105,12 @@ class GeneralCardItem extends React.Component {
           <Modal onClose={this.closeModal}>
             <ModalActionContainer>
               <AddItemForm
-                onSubmit={this.editItem}
-                title={relation === 'departments' ? 'Edit department' : 'Edit city'}
+                onSubmit={editCard}
+                title={
+                  relation === 'departments' ? 'Edit department' : 'Edit city'
+                }
+                idItem={id}
+                relation={relation}
               ></AddItemForm>
             </ModalActionContainer>
           </Modal>
