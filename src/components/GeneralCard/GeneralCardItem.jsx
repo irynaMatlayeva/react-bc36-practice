@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import { AddItemForm, Paper } from 'components';
 import React from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -14,110 +13,115 @@ import {
 } from './GeneralCardItem.styled';
 
 import { Modal } from 'components';
+import { useState } from 'react';
 
-class GeneralCardItem extends React.Component {
-  state = {
-    showDropDown: false,
-    dropDownPosition: {
-      x: 0,
-      y: 0,
-      clientWidth: 0,
-      clientHeight: 0,
-    },
-    showModal: null,
-  };
+function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [dropDownPosition, setDropDownPosition] = useState({
+    x: 0,
+    y: 0,
+    clientWidth: 0,
+    clientHeight: 0,
+  });
+  const [showModal, setShowModal] = useState(null);
 
-  showDropDawn = evt => {
-    console.log(evt);
-    this.setState({
-      showDropDown: true,
-      dropDownPosition: {
-        x: evt.clientX,
-        y: evt.clientY,
-        clientWidth: document.documentElement.clientWidth,
-        clientHeight: document.documentElement.clientHeight,
-      },
+  const showDropDawn = evt => {
+    setShowDropDown(true);
+    setDropDownPosition({
+      x: evt.clientX,
+      y: evt.clientY,
+      clientWidth: document.documentElement.clientWidth,
+      clientHeight: document.documentElement.clientHeight,
     });
+    // this.setState({
+    //   showDropDown: true,
+    //   dropDownPosition: {
+    //     x: evt.clientX,
+    //     y: evt.clientY,
+    //     clientWidth: document.documentElement.clientWidth,
+    //     clientHeight: document.documentElement.clientHeight,
+    //   },
+    // });
   };
 
-  toggleDropDawn = () => {
-    this.setState(({ showDropDown }) => ({
-      showDropDown: !showDropDown,
-    }));
+  const toggleDropDawn = () => {
+    setShowDropDown(!showDropDown);
+    // this.setState(({ showDropDown }) => ({
+    //   showDropDown: !showDropDown,
+    // }));
   };
 
-  closeModal = () => {
-    this.setState(prev => ({ showModal: null }));
+  const closeModal = () => {
+    setShowModal(null);
+    // this.setState(prev => ({ showModal: null }));
   };
 
-  handleActionBtnClick = action => {
-    this.setState({ showModal: action, showDropDown: false });
+  const handleActionBtnClick = action => {
+    setShowModal(action);
+    setShowDropDown(false);
+    // this.setState({ showModal: action, showDropDown: false });
   };
 
-  render() {
-    const { text, id, relation, deleteCard, editCard } = this.props;
-    // console.log(id, relation);
-    return (
-      <Paper>
-        <StyledItem>
-          <span>{text}</span>
-          <StyledButtonMenu onClick={this.showDropDawn}>
-            <BsThreeDotsVertical />
-          </StyledButtonMenu>
-          {this.state.showDropDown && (
-            <Modal onClose={this.toggleDropDawn}>
-              <StyledContainer
-                x={this.state.dropDownPosition.x}
-                y={this.state.dropDownPosition.y}
-                clientWidth={this.state.dropDownPosition.clientWidth}
-                clientHeight={this.state.dropDownPosition.clientHeight}
+  return (
+    <Paper>
+      <StyledItem>
+        <span>{text}</span>
+        <StyledButtonMenu onClick={showDropDawn}>
+          <BsThreeDotsVertical />
+        </StyledButtonMenu>
+        {showDropDown && (
+          <Modal onClose={toggleDropDawn}>
+            <StyledContainer
+              x={dropDownPosition.x}
+              y={dropDownPosition.y}
+              clientWidth={dropDownPosition.clientWidth}
+              clientHeight={dropDownPosition.clientHeight}
+            >
+              <StyledButton
+                type="button"
+                onClick={() => handleActionBtnClick('edit')}
               >
-                <StyledButton
-                  type="button"
-                  onClick={() => this.handleActionBtnClick('edit')}
-                >
-                  <EditBtnIcon />
-                  Edit
-                </StyledButton>
-                <StyledButton
-                  type="button"
-                  onClick={() => this.handleActionBtnClick('delete')}
-                >
-                  <DeleteBtnIcon />
-                  Delete
-                </StyledButton>
-              </StyledContainer>
-            </Modal>
-          )}
-        </StyledItem>
-        {this.state.showModal === 'delete' && (
-          <Modal onClose={this.closeModal}>
-            <ModalActionContainer>
-              <h2>
-                Delete {relation === 'departments' ? 'department' : 'city'}{' '}
-              </h2>
-              <button onClick={() => deleteCard(id, relation)}>Yes</button>
-              <button onClick={this.closeModal}>No</button>
-            </ModalActionContainer>
+                <EditBtnIcon />
+                Edit
+              </StyledButton>
+              <StyledButton
+                type="button"
+                onClick={() => handleActionBtnClick('delete')}
+              >
+                <DeleteBtnIcon />
+                Delete
+              </StyledButton>
+            </StyledContainer>
           </Modal>
         )}
-        {this.state.showModal === 'edit' && (
-          <Modal onClose={this.closeModal}>
-            <ModalActionContainer>
-              <AddItemForm
-                onSubmit={editCard}
-                title={
-                  relation === 'departments' ? 'Edit department' : 'Edit city'
-                }
-                idItem={id}
-                relation={relation}
-              ></AddItemForm>
-            </ModalActionContainer>
-          </Modal>
-        )}
-      </Paper>
-    );
-  }
+      </StyledItem>
+      {showModal === 'delete' && (
+        <Modal onClose={closeModal}>
+          <ModalActionContainer>
+            <h2>
+              Delete {relation === 'departments' ? 'department' : 'city'}{' '}
+            </h2>
+            <button onClick={() => deleteCard(id, relation)}>Yes</button>
+            <button onClick={closeModal}>No</button>
+          </ModalActionContainer>
+        </Modal>
+      )}
+      {showModal === 'edit' && (
+        <Modal onClose={closeModal}>
+          <ModalActionContainer>
+            <AddItemForm
+              onSubmit={editCard}
+              title={
+                relation === 'departments' ? 'Edit department' : 'Edit city'
+              }
+              idItem={id}
+              relation={relation}
+            ></AddItemForm>
+          </ModalActionContainer>
+        </Modal>
+      )}
+    </Paper>
+  );
 }
 
 export default GeneralCardItem;
