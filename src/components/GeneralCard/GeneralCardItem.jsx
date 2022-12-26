@@ -33,27 +33,14 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
       clientWidth: document.documentElement.clientWidth,
       clientHeight: document.documentElement.clientHeight,
     });
-    // this.setState({
-    //   showDropDown: true,
-    //   dropDownPosition: {
-    //     x: evt.clientX,
-    //     y: evt.clientY,
-    //     clientWidth: document.documentElement.clientWidth,
-    //     clientHeight: document.documentElement.clientHeight,
-    //   },
-    // });
   };
 
   const toggleDropDawn = () => {
     setShowDropDown(!showDropDown);
-    // this.setState(({ showDropDown }) => ({
-    //   showDropDown: !showDropDown,
-    // }));
   };
 
   const closeModal = () => {
     setShowModal(null);
-    // this.setState(prev => ({ showModal: null }));
   };
 
   const handleActionBtnClick = action => {
