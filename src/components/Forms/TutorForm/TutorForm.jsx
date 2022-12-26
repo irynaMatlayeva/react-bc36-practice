@@ -1,11 +1,14 @@
 import React from 'react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { Button } from 'components';
-import { object, string, number, date, InferType } from 'yup';
+import { object, string } from 'yup';
 import { ErrMsg } from './TutorForm.styled';
 
 const schemaValidation = object({
-  firstName: string().min(2, 'Повинно бути мінімум 2 символи').max(5).required(),
+  firstName: string()
+    .min(2, 'Повинно бути мінімум 2 символи')
+    .max(5)
+    .required(),
   lastName: string(),
   patronymic: string(),
   phone: string(),
