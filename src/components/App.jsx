@@ -20,21 +20,13 @@ import TutorIcon from '../assets/images/teachers-emoji.png';
 import AddIcon from '../assets/images/add.svg';
 import CitiesIcon from '../assets/images/cities.svg';
 import DepartmentIcon from '../assets/images/faculties-icon.svg';
+import { useEffect } from 'react';
+import { useTutors, useCities, useDepartments } from '../hooks';
 
 function App() {
-  const [tutors, setTutors] = useState(universityData?.tutors ?? []);
-  const [cities, setCities] = useState(
-    universityData?.cities.map(city => ({
-      text: city,
-      relation: 'cities',
-    })) ?? []
-  );
-  const [departments, setDepartments] = useState(
-    universityData?.department.map(({ name }) => ({
-      text: name,
-      relation: 'departments',
-    })) ?? []
-  );
+  const [tutors, setTutors] = useTutors();
+  const [cities, setCities] = useCities();
+  const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
 
   const addTutor = tutor => {
@@ -143,7 +135,7 @@ function App() {
     //   ],
     // }));
   };
-
+  console.log(departments);
   return (
     <div className="app">
       <Sidebar />
