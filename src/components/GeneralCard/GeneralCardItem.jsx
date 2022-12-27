@@ -64,17 +64,11 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
               clientWidth={dropDownPosition.clientWidth}
               clientHeight={dropDownPosition.clientHeight}
             >
-              <StyledButton
-                type="button"
-                onClick={() => handleActionBtnClick('edit')}
-              >
+              <StyledButton type="button" onClick={() => handleActionBtnClick('edit')}>
                 <EditBtnIcon />
                 Edit
               </StyledButton>
-              <StyledButton
-                type="button"
-                onClick={() => handleActionBtnClick('delete')}
-              >
+              <StyledButton type="button" onClick={() => handleActionBtnClick('delete')}>
                 <DeleteBtnIcon />
                 Delete
               </StyledButton>
@@ -85,9 +79,7 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
       {showModal === 'delete' && (
         <Modal onClose={closeModal}>
           <ModalActionContainer>
-            <h2>
-              Delete {relation === 'departments' ? 'department' : 'city'}{' '}
-            </h2>
+            <h2>Delete {relation === 'departments' ? 'department' : 'city'} </h2>
             <button onClick={() => deleteCard(id, relation)}>Yes</button>
             <button onClick={closeModal}>No</button>
           </ModalActionContainer>
@@ -98,11 +90,11 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
           <ModalActionContainer>
             <AddItemForm
               onSubmit={editCard}
-              title={
-                relation === 'departments' ? 'Edit department' : 'Edit city'
-              }
+              title={relation === 'departments' ? 'Edit department' : 'Edit city'}
               idItem={id}
               relation={relation}
+              textItem={text}
+              closeModal={closeModal}
             ></AddItemForm>
           </ModalActionContainer>
         </Modal>

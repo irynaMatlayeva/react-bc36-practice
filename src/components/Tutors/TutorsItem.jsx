@@ -14,6 +14,7 @@ const TutorsItem = ({
   city,
   options,
   deleteTutor,
+  id,
 }) => {
   return (
     <Paper>
@@ -41,7 +42,7 @@ const TutorsItem = ({
           <p>{options}</p>
         </ColumnItem>
         <ColumnItem>
-          <button type="button" onClick={() => deleteTutor(firstName)}>
+          <button type="button" onClick={() => deleteTutor(id)}>
             Видалити
           </button>
         </ColumnItem>
@@ -60,4 +61,5 @@ TutorsItem.propTypes = {
   email: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   options: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };

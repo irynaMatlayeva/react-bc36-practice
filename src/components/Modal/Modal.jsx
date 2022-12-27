@@ -30,7 +30,6 @@ export default function Modal({ children, onClose }) {
       onClose();
     }
   };
-  console.log('object');
   return createPortal(
     <div className={css.Modal__backdrop} onClick={handleBackdropClick}>
       <div className={css.Modal__content}>{children}</div>

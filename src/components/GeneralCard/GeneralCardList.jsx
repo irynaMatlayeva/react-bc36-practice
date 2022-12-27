@@ -2,12 +2,13 @@ import GeneralCardItem from './GeneralCardItem';
 import { StyledList } from './GeneralCardItem.styled';
 
 const GeneralCardList = ({ listData, deleteCard, editCard }) => {
+  console.log(listData);
   return (
     <StyledList>
       {listData.length > 0 &&
         listData.map(({ text, relation, id }) => (
           <GeneralCardItem
-            id={text}
+            id={id}
             key={id}
             relation={relation}
             text={text}

@@ -1,31 +1,32 @@
 import { useState } from 'react';
-import axios from 'axios';
-
 import {
-  Sidebar,
+  AddItemForm,
+  Button,
+  GeneralCardList,
   Main,
   Paper,
-  UniversityCard,
-  TutorsList,
-  Button,
   Section,
-  GeneralCardList,
+  Sidebar,
   TutorForm,
-  AddItemForm,
+  TutorsList,
+  UniversityCard,
 } from '../components';
 import FORMS from '../constants/forms';
 
 import universityData from '../constants/universityData.json';
 
-import TutorIcon from '../assets/images/teachers-emoji.png';
+import { createCity, deleteCity, updateCity } from 'API/citiesAPI/citiesAPI';
+import {
+  createDepartment,
+  deleteDepartment,
+  updateDepartment,
+} from 'API/departmentsAPI/departmentsAPI';
+import { createTutor, deleteTutor } from 'API/tutorsAPI/tutorsAPI';
 import AddIcon from '../assets/images/add.svg';
 import CitiesIcon from '../assets/images/cities.svg';
 import DepartmentIcon from '../assets/images/faculties-icon.svg';
-import { useTutors, useCities, useDepartments } from '../hooks';
-
-const BASE_URL = 'https://63a99dbd594f75dc1dbb0bc9.mockapi.io';
-
-axios.defaults.baseURL = BASE_URL;
+import TutorIcon from '../assets/images/teachers-emoji.png';
+import { useCities, useDepartments, useTutors } from '../hooks';
 
 function App() {
   const [tutors, setTutors] = useTutors();
@@ -34,14 +35,20 @@ function App() {
   const [showForm, setShowForm] = useState(null);
 
   const addTutor = tutor => {
-    axios.post('/tutors', tutor).then(({ data }) => {
+    createTutor(tutor).then(({ data }) => {
       setTutors([...tutors, data]);
       setShowForm(null);
     });
   };
 
-  const deleteTutor = name => {
-    setTutors([...tutors.filter(({ firstName }) => firstName !== name)]);
+  const handleTutorDelete = id => {
+    deleteTutor(id).then(res => {
+      const deletedId = res.data.id;
+      const renewedTutors = tutors.filter(({ id }) => {
+        return deletedId !== id;
+      });
+      setTutors(renewedTutors);
+    });
     // this.setState(({ tutors }) => {
     //   return {
     //     tutors: [...tutors].filter(({ firstName }) => firstName !== name),
@@ -61,70 +68,75 @@ function App() {
   };
 
   const addCity = name => {
-    axios.post('/cities', { text: name }).then(({ data }) => {
-      if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
-        alert('City exists');
-      } else {
-        const newCity = {
-          ...data,
-          relation: 'cities',
-        };
-        setCities([...cities, newCity]);
-        setShowForm(null);
-      }
+    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
+      alert('City exists');
+      return;
+    }
+    createCity({ text: name }).then(({ data }) => {
+      const newCity = {
+        ...data,
+        relation: 'cities',
+      };
+      setCities([...cities, newCity]);
+      setShowForm(null);
     });
   };
 
   const addDepartment = name => {
-    axios.post('/departments', { name }).then(({ data: { id, name } }) => {
-      if (
-        departments.some(
-          department => department.text.toLowerCase() === name.toLowerCase()
-        )
-      ) {
-        alert('Department exists');
-      } else {
-        const newDepartment = {
-          id,
-          text: name,
-          relation: 'departments',
-        };
-        setDepartments([...departments, newDepartment]);
-        setShowForm(null);
-      }
+    if (departments.some(department => department.text.toLowerCase() === name.toLowerCase())) {
+      alert('Department exists');
+      return;
+    }
+    createDepartment({ name }).then(({ data: { id, name } }) => {
+      const newDepartment = {
+        id,
+        text: name,
+        relation: 'departments',
+      };
+      setDepartments([...departments, newDepartment]);
+      setShowForm(null);
     });
   };
 
   const handleDeleteCard = (id, relation) => {
     if (relation === 'cities') {
-      const newCitiesArray = cities.filter(({ text }) => text !== id);
-      setCities(newCitiesArray);
+      deleteCity(id).then(res => {
+        const resId = res.data.id;
+        const newCitiesArray = cities.filter(el => el.id !== resId);
+        setCities(newCitiesArray);
+      });
     } else {
-      const newDepertmentArray = departments.filter(({ text }) => text !== id);
-      setDepartments(newDepertmentArray);
+      deleteDepartment(id).then(res => {
+        const resId = res.data.id;
+        const newDepartmentsArray = departments.filter(el => el.id !== resId);
+        setDepartments(newDepartmentsArray);
+      });
     }
-    // this.setState(prevState => ({
-    //   [relation]: prevState[relation].filter(({ text }) => text !== id),
-    // }));
   };
 
   const handleEditCard = data => {
     const { id, relation, name } = data;
 
     if (relation === 'cities') {
-      const indexCity = cities.findIndex(item => item.text === id);
-      setCities(prev => [
-        ...prev.slice(0, indexCity),
-        { text: name, relation },
-        ...prev.slice(indexCity + 1),
-      ]);
+      updateCity(id, { id, text: name }).then(res => {
+        const updatedId = res.data.id;
+        const indexCity = cities.findIndex(item => item.id === updatedId);
+        setCities(prev => [
+          ...prev.slice(0, indexCity),
+          { text: res.data.text, relation, id: updatedId },
+          ...prev.slice(indexCity + 1),
+        ]);
+      });
     } else {
-      const indexDepartment = departments.findIndex(item => item.text === id);
-      setDepartments(prev => [
-        ...prev.slice(0, indexDepartment),
-        { text: name, relation },
-        ...prev.slice(indexDepartment + 1),
-      ]);
+      updateDepartment(id, { id, text: name }).then(res => {
+        const updatedId = res.data.id;
+        const indexDepartment = departments.findIndex(item => item.id === updatedId);
+        setCities(prev => [
+          ...prev.slice(0, indexDepartment),
+          { text: res.data.name, relation, id: updatedId },
+          ...prev.slice(indexDepartment + 1),
+        ]);
+      });
     }
 
     // const elemIndex = this.state[relation].findIndex(item => item.text === id);
@@ -136,7 +148,6 @@ function App() {
     //   ],
     // }));
   };
-  console.log(departments);
   return (
     <div className="app">
       <Sidebar />
@@ -152,7 +163,7 @@ function App() {
           </Paper>
         </Section>
         <Section title="Tutors" image={TutorIcon}>
-          <TutorsList tutors={tutors} deleteTutor={deleteTutor} />
+          <TutorsList tutors={tutors} deleteTutor={handleTutorDelete} />
           {showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
 
           <Button
@@ -168,11 +179,7 @@ function App() {
             editCard={handleEditCard}
           />
           {showForm === FORMS.CITY_FORM && (
-            <AddItemForm
-              onSubmit={addCity}
-              title="Add city"
-              placeholder="City"
-            />
+            <AddItemForm onSubmit={addCity} title="Add city" placeholder="City" />
           )}
           <Button
             text={showForm === FORMS.CITY_FORM ? 'Close form' : 'Add city'}
@@ -187,19 +194,11 @@ function App() {
             editCard={handleEditCard}
           />
           {showForm === FORMS.DEPARTMENTS_FORM && (
-            <AddItemForm
-              onSubmit={addDepartment}
-              title="Add department"
-              placeholder="Department"
-            />
+            <AddItemForm onSubmit={addDepartment} title="Add department" placeholder="Department" />
           )}
 
           <Button
-            text={
-              showForm === FORMS.DEPARTMENTS_FORM
-                ? 'Close form'
-                : 'Add department'
-            }
+            text={showForm === FORMS.DEPARTMENTS_FORM ? 'Close form' : 'Add department'}
             image={AddIcon}
             action={() => handleShowForm(FORMS.DEPARTMENTS_FORM)}
           />
