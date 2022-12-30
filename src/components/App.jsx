@@ -7,56 +7,35 @@ import {
   deleteDepartment,
   updateDepartment,
 } from 'API/departmentsAPI/departmentsAPI';
-import { createTutor, deleteTutor } from 'API/tutorsAPI/tutorsAPI';
 
-import { useCities, useDepartments, useTutors } from '../hooks';
-import {
-  DepartmentDetails,
-  DepartmentsPages,
-  NotFound,
-  UniversityPages,
-} from 'pages';
-import { Route, Routes, useLocation, useNavigate } from 'react-router';
-import { useEffect } from 'react';
+import { DepartmentDetails, DepartmentsPages, NotFound, UniversityPages } from 'pages';
 import DepartmentsDescription from 'pages/Departments/DepartmentsDetail/DepartmentsDescription';
 import DepartmentsHistory from 'pages/Departments/DepartmentsDetail/DepartmentsHistory';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
+import { loadTutorsAction } from 'store/tutors/actions';
+import { useCities, useDepartments } from '../hooks';
 
 function App() {
-  const [tutors, setTutors] = useTutors();
   const [cities, setCities] = useCities();
   const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
 
+  const dispatch = useDispatch();
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(loadTutorsAction());
+  }, [dispatch]);
 
   useEffect(() => {
     if (pathname === '/') {
       navigate('university');
     }
   }, [navigate, pathname]);
-
-  const addTutor = tutor => {
-    createTutor(tutor).then(({ data }) => {
-      setTutors([...tutors, data]);
-      setShowForm(null);
-    });
-  };
-
-  const handleTutorDelete = id => {
-    deleteTutor(id).then(res => {
-      const deletedId = res.data.id;
-      const renewedTutors = tutors.filter(({ id }) => {
-        return deletedId !== id;
-      });
-      setTutors(renewedTutors);
-    });
-    // this.setState(({ tutors }) => {
-    //   return {
-    //     tutors: [...tutors].filter(({ firstName }) => firstName !== name),
-    //   };
-    // });
-  };
 
   const onEdit = () => {
     console.log('edit');
@@ -85,11 +64,7 @@ function App() {
   };
 
   const addDepartment = name => {
-    if (
-      departments.some(
-        department => department.text.toLowerCase() === name.toLowerCase()
-      )
-    ) {
+    if (departments.some(department => department.text.toLowerCase() === name.toLowerCase())) {
       alert('Department exists');
       return;
     }
@@ -136,9 +111,7 @@ function App() {
     } else {
       updateDepartment(id, { id, text: name }).then(res => {
         const updatedId = res.data.id;
-        const indexDepartment = departments.findIndex(
-          item => item.id === updatedId
-        );
+        const indexDepartment = departments.findIndex(item => item.id === updatedId);
         setCities(prev => [
           ...prev.slice(0, indexDepartment),
           { text: res.data.name, relation, id: updatedId },
@@ -168,11 +141,8 @@ function App() {
                 <UniversityPages
                   onEdit={onEdit}
                   onDelete={onDelete}
-                  tutors={tutors}
-                  handleTutorDelete={handleTutorDelete}
                   showForm={showForm}
                   handleShowForm={handleShowForm}
-                  addTutor={addTutor}
                   cities={cities}
                   handleEditCard={handleEditCard}
                   addCity={addCity}
@@ -193,14 +163,8 @@ function App() {
                   />
                 }
               />
-              <Route
-                path=":departmentId"
-                element={<DepartmentDetails departments={departments} />}
-              >
-                <Route
-                  path="description"
-                  element={<DepartmentsDescription />}
-                />
+              <Route path=":departmentId" element={<DepartmentDetails departments={departments} />}>
+                <Route path="description" element={<DepartmentsDescription />} />
                 <Route path="history" element={<DepartmentsHistory />} />
               </Route>
             </Route>

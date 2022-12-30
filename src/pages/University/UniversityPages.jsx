@@ -19,11 +19,9 @@ import universityData from '../../constants/universityData.json';
 const UniversityPages = ({
   onEdit,
   onDelete,
-  tutors,
   handleTutorDelete,
   showForm,
   handleShowForm,
-  addTutor,
   cities,
   handleDeleteCard,
   handleEditCard,
@@ -42,8 +40,8 @@ const UniversityPages = ({
         </Paper>
       </Section>
       <Section title="Tutors" image={TutorIcon}>
-        <TutorsList tutors={tutors} deleteTutor={handleTutorDelete} />
-        {showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
+        <TutorsList deleteTutor={handleTutorDelete} />
+        {showForm === FORMS.TUTOR_FORM && <TutorForm />}
 
         <Button
           text={showForm === FORMS.TUTOR_FORM ? 'Close form' : 'Add tutor'}

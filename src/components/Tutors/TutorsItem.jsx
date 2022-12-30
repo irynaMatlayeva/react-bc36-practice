@@ -4,18 +4,11 @@ import { ColumnItem, Container } from './TutorsItem.styled';
 import PhoneImg from '../../assets/images/phone.svg';
 import MailImg from '../../assets/images/mail.svg';
 import LocationImg from '../../assets/images/pin.svg';
+import { useDispatch } from 'react-redux';
+import { deleteTutorAction } from 'store/tutors/actions';
 
-const TutorsItem = ({
-  firstName,
-  lastName,
-  patronymic,
-  phone,
-  email,
-  city,
-  options,
-  deleteTutor,
-  id,
-}) => {
+const TutorsItem = ({ firstName, lastName, patronymic, phone, email, city, options, id }) => {
+  const dispatch = useDispatch();
   return (
     <Paper>
       <Container>
@@ -42,7 +35,7 @@ const TutorsItem = ({
           <p>{options}</p>
         </ColumnItem>
         <ColumnItem>
-          <button type="button" onClick={() => deleteTutor(id)}>
+          <button type="button" onClick={() => dispatch(deleteTutorAction(id))}>
             Видалити
           </button>
         </ColumnItem>
