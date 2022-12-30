@@ -17,7 +17,9 @@ const useDepartments = () => {
         )
       );
 
-      const departmentsFromLocalStorage = JSON.parse(localStorage.getItem('departments'));
+      const departmentsFromLocalStorage = JSON.parse(
+        localStorage.getItem('departments')
+      );
       departmentsFromLocalStorage
         ? setDepartments(departmentsFromLocalStorage)
         : setDepartments([]);
