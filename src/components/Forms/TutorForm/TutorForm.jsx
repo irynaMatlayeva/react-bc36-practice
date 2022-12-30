@@ -3,12 +3,11 @@ import { Field, Form, Formik } from 'formik';
 import { Button } from 'components';
 import { object, string } from 'yup';
 import { ErrMsg } from './TutorForm.styled';
+import { useDispatch } from 'react-redux';
+import { createTutorAction } from 'store/tutors/actions';
 
 const schemaValidation = object({
-  firstName: string()
-    .min(2, 'Повинно бути мінімум 2 символи')
-    .max(5)
-    .required(),
+  firstName: string().min(2, 'Повинно бути мінімум 2 символи').max(5).required(),
   lastName: string(),
   patronymic: string(),
   phone: string(),
@@ -33,11 +32,12 @@ const formNames = {
   city: 'Місто',
 };
 
-function TutorForm({ addTutor }) {
+function TutorForm() {
+  const dispatch = useDispatch();
   const entries = Object.entries(formNames);
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-    addTutor(values);
+    dispatch(createTutorAction(values));
     resetForm();
     setSubmitting(false);
   };
