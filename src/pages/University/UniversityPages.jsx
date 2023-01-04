@@ -1,3 +1,4 @@
+import { fetchCities } from 'API/citiesAPI/citiesAPI';
 import {
   AddItemForm,
   Button,
@@ -9,12 +10,17 @@ import {
   UniversityCard,
 } from 'components';
 import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import AddIcon from '../../assets/images/add.svg';
 import CitiesIcon from '../../assets/images/cities.svg';
 import TutorIcon from '../../assets/images/teachers-emoji.png';
 import FORMS from '../../constants/forms';
 import universityData from '../../constants/universityData.json';
+import { fetchCitiesOperation } from "../../store/cities/operations";
+import { getCities } from '../../store/cities/citiesSlice';
 
 const UniversityPages = ({
   onEdit,
@@ -22,11 +28,16 @@ const UniversityPages = ({
   handleTutorDelete,
   showForm,
   handleShowForm,
-  cities,
   handleDeleteCard,
   handleEditCard,
   addCity,
 }) => {
+  const dispatch = useDispatch();
+  const cities = useSelector(getCities);
+  
+  useEffect(() => { dispatch(fetchCitiesOperation())}
+    , [dispatch]);
+
   return (
     <>
       <Section title="Information about university" isColumn isRightPosition>

@@ -3,6 +3,7 @@ import * as types from './actionTypes';
 
 export const loadTutorsAction = () => dispatch => {
   fetchTutors().then(res =>
+    // console.log('res from actions', res)
     dispatch({
       type: types.LOAD_TUTORS,
       payload: res.data,

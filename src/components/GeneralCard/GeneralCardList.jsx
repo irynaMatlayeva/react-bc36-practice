@@ -2,7 +2,7 @@ import GeneralCardItem from './GeneralCardItem';
 import { StyledList } from './GeneralCardItem.styled';
 
 const GeneralCardList = ({ listData, deleteCard, editCard }) => {
-  console.log(listData);
+  // console.log(listData);
   return (
     <StyledList>
       {listData.length > 0 &&
