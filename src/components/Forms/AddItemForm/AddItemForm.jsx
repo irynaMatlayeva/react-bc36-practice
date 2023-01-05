@@ -4,8 +4,17 @@ import AddIcon from '../../../assets/images/add.svg';
 import { Field, Form, Formik } from 'formik';
 import { ErrMsg } from '../TutorForm/TutorForm.styled';
 import { object, string } from 'yup';
+import { useDispatch } from 'react-redux';
 
-function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem, closeModal }) {
+function AddItemForm({
+  onSubmit,
+  title,
+  placeholder,
+  idItem,
+  relation,
+  textItem,
+  closeModal,
+}) {
   const INITIAL_VALUES = {
     name: textItem || '',
   };
@@ -13,10 +22,14 @@ function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem,
     name: string().min(2, 'Minimum 2 symbols'),
   });
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-    const data = idItem ? { id: idItem, relation, name: values.name } : values.name;
-    onSubmit(data);
+    const data = idItem
+      ? { id: idItem, relation, name: values.name }
+      : values.name;
+    dispatch(onSubmit(data));
     closeModal();
     resetForm();
     setSubmitting(false);
@@ -45,7 +58,11 @@ function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem,
                 <ErrMsg name="name" component="div" />
               </div>
             }
-            <Button text={idItem ? 'Save' : 'Add'} image={AddIcon} type="submit" />
+            <Button
+              text={idItem ? 'Save' : 'Add'}
+              image={AddIcon}
+              type="submit"
+            />
           </div>
         </Form>
       )}

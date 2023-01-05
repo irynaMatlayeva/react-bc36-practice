@@ -19,7 +19,10 @@ import CitiesIcon from '../../assets/images/cities.svg';
 import TutorIcon from '../../assets/images/teachers-emoji.png';
 import FORMS from '../../constants/forms';
 import universityData from '../../constants/universityData.json';
-import { fetchCitiesOperation } from "../../store/cities/operations";
+import {
+  createCitiesOperation,
+  fetchCitiesOperation,
+} from '../../store/cities/operations';
 import { getCities } from '../../store/cities/citiesSlice';
 
 const UniversityPages = ({
@@ -30,13 +33,13 @@ const UniversityPages = ({
   handleShowForm,
   handleDeleteCard,
   handleEditCard,
-  addCity,
 }) => {
   const dispatch = useDispatch();
   const cities = useSelector(getCities);
-  
-  useEffect(() => { dispatch(fetchCitiesOperation())}
-    , [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchCitiesOperation());
+  }, [dispatch]);
 
   return (
     <>
@@ -67,7 +70,11 @@ const UniversityPages = ({
           editCard={handleEditCard}
         />
         {showForm === FORMS.CITY_FORM && (
-          <AddItemForm onSubmit={addCity} title="Add city" placeholder="City" />
+          <AddItemForm
+            onSubmit={createCitiesOperation}
+            title="Add city"
+            placeholder="City"
+          />
         )}
         <Button
           text={showForm === FORMS.CITY_FORM ? 'Close form' : 'Add city'}
