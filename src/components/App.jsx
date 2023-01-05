@@ -1,7 +1,5 @@
 import { Suspense, useState } from 'react';
 import { Main, Sidebar } from '../components';
-
-import { createCity, deleteCity, updateCity } from 'API/citiesAPI/citiesAPI';
 import {
   createDepartment,
   deleteDepartment,

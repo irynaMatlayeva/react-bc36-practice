@@ -1,4 +1,3 @@
-import { fetchCities } from 'API/citiesAPI/citiesAPI';
 import {
   AddItemForm,
   Button,

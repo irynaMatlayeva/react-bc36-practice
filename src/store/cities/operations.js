@@ -5,7 +5,6 @@ import {
   fetchCities,
   updateCity,
 } from '../../API/citiesAPI/citiesAPI';
-import { useSelector } from 'react-redux';
 
 export const fetchCitiesOperation = createAsyncThunk(
   'cities/fetchAll',
