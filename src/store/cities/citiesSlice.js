@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Notiflix from 'notiflix';
+import Notiflix, { Notify } from 'notiflix';
 import {
   createCitiesOperation,
   deleteCitiesOperation,
@@ -26,7 +26,13 @@ const citiesSlice = createSlice({
       //   ) {
       //     return state.cities;
       //   }
-      state.cities.unshift({ ...payload, relation: 'cities' });
+      if (state.cities.some(city => city.text.toLowerCase() === payload.text.toLowerCase())) {
+        Notify.warning(`${payload.text} already exists`);
+        return state;
+      } else {
+        Notify.success(`Додали місто (${payload.text})`);
+        state.cities.unshift(payload);
+      }
     },
     // [createCitiesOperation.rejected](_, { payload }) {
     //   Notiflix.Notify.failure(`already exists`);
@@ -35,9 +41,7 @@ const citiesSlice = createSlice({
       state.cities = state.cities.filter(city => city.id !== payload.id);
     },
     [editCitiesOperation.fulfilled](state, { payload }) {
-      state.cities = state.cities.map(city =>
-        city.id === payload.id ? payload : city
-      );
+      state.cities = state.cities.map(city => (city.id === payload.id ? payload : city));
     },
   },
 });

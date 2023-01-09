@@ -1,12 +1,14 @@
 import { Button, Section } from 'components';
 import React from 'react';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Outlet, useNavigate, useParams } from 'react-router';
+import { selectDepartments } from 'store/departments/selectors';
 
-const DepartmentDetails = ({ departments = [] }) => {
+const DepartmentDetails = () => {
   const navigate = useNavigate();
   const { departmentId } = useParams();
-
+  const departments = useSelector(selectDepartments);
   const department = useMemo(
     () => departments.find(({ id }) => id === departmentId),
     [departmentId, departments]

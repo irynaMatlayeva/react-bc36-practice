@@ -6,12 +6,7 @@ import {
   updateDepartment,
 } from 'API/departmentsAPI/departmentsAPI';
 
-import {
-  DepartmentDetails,
-  DepartmentsPages,
-  NotFound,
-  UniversityPages,
-} from 'pages';
+import { DepartmentDetails, DepartmentsPages, NotFound, UniversityPages } from 'pages';
 import DepartmentsDescription from 'pages/Departments/DepartmentsDetail/DepartmentsDescription';
 import DepartmentsHistory from 'pages/Departments/DepartmentsDetail/DepartmentsHistory';
 import { useEffect } from 'react';
@@ -51,11 +46,7 @@ function App() {
   };
 
   const addDepartment = name => {
-    if (
-      departments.some(
-        department => department.text.toLowerCase() === name.toLowerCase()
-      )
-    ) {
+    if (departments.some(department => department.text.toLowerCase() === name.toLowerCase())) {
       alert('Department exists');
       return;
     }
@@ -86,9 +77,7 @@ function App() {
     if (relation !== 'cities') {
       updateDepartment(id, { id, text: name }).then(res => {
         const updatedId = res.data.id;
-        const indexDepartment = departments.findIndex(
-          item => item.id === updatedId
-        );
+        const indexDepartment = departments.findIndex(item => item.id === updatedId);
         setDepartments(prev => [
           ...prev.slice(0, indexDepartment),
           { text: res.data.name, relation, id: updatedId },
@@ -129,14 +118,8 @@ function App() {
                   />
                 }
               />
-              <Route
-                path=":departmentId"
-                element={<DepartmentDetails departments={departments} />}
-              >
-                <Route
-                  path="description"
-                  element={<DepartmentsDescription />}
-                />
+              <Route path=":departmentId" element={<DepartmentDetails />}>
+                <Route path="description" element={<DepartmentsDescription />} />
                 <Route path="history" element={<DepartmentsHistory />} />
               </Route>
             </Route>
