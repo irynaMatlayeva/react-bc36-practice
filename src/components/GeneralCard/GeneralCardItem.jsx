@@ -16,10 +16,8 @@ import { Modal } from 'components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import {
-  deleteCitiesOperation,
-  editCitiesOperation,
-} from 'store/cities/operations';
+import { deleteCitiesOperation, editCitiesOperation } from 'store/cities/operations';
+import { deleteDepartmentsOperation } from 'store/departments/operations';
 
 function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -34,7 +32,8 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onClickToId = () => {
+  const onClickToId = evt => {
+    if (evt.target.closest('button')) return;
     if (relation !== 'departments') return;
     navigate(`/departments/${id}`);
   };
@@ -78,17 +77,11 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
               clientWidth={dropDownPosition.clientWidth}
               clientHeight={dropDownPosition.clientHeight}
             >
-              <StyledButton
-                type="button"
-                onClick={() => handleActionBtnClick('edit')}
-              >
+              <StyledButton type="button" onClick={() => handleActionBtnClick('edit')}>
                 <EditBtnIcon />
                 Edit
               </StyledButton>
-              <StyledButton
-                type="button"
-                onClick={() => handleActionBtnClick('delete')}
-              >
+              <StyledButton type="button" onClick={() => handleActionBtnClick('delete')}>
                 <DeleteBtnIcon />
                 Delete
               </StyledButton>
@@ -99,14 +92,12 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
       {showModal === 'delete' && (
         <Modal onClose={closeModal}>
           <ModalActionContainer>
-            <h2>
-              Delete {relation === 'departments' ? 'department' : 'city'}{' '}
-            </h2>
+            <h2>Delete {relation === 'departments' ? 'department' : 'city'} </h2>
             <button
               onClick={() => {
                 relation === 'cities'
                   ? dispatch(deleteCitiesOperation(id))
-                  : console.log('department');
+                  : dispatch(deleteDepartmentsOperation(id));
               }}
             >
               Yes
@@ -120,9 +111,7 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
           <ModalActionContainer>
             <AddItemForm
               onSubmit={editCitiesOperation}
-              title={
-                relation === 'departments' ? 'Edit department' : 'Edit city'
-              }
+              title={relation === 'departments' ? 'Edit department' : 'Edit city'}
               idItem={id}
               relation={relation}
               textItem={text}
