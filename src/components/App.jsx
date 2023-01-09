@@ -1,24 +1,26 @@
 import { Suspense, useState } from 'react';
 import { Main, Sidebar } from '../components';
-
-import { createCity, deleteCity, updateCity } from 'API/citiesAPI/citiesAPI';
 import {
   createDepartment,
   deleteDepartment,
   updateDepartment,
 } from 'API/departmentsAPI/departmentsAPI';
 
-import { DepartmentDetails, DepartmentsPages, NotFound, UniversityPages } from 'pages';
+import {
+  DepartmentDetails,
+  DepartmentsPages,
+  NotFound,
+  UniversityPages,
+} from 'pages';
 import DepartmentsDescription from 'pages/Departments/DepartmentsDetail/DepartmentsDescription';
 import DepartmentsHistory from 'pages/Departments/DepartmentsDetail/DepartmentsHistory';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { loadTutorsAction } from 'store/tutors/actions';
-import { useCities, useDepartments } from '../hooks';
+import { useDepartments } from '../hooks';
 
 function App() {
-  const [cities, setCities] = useCities();
   const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
 
@@ -48,23 +50,12 @@ function App() {
     setShowForm(showForm === formName ? null : formName);
   };
 
-  const addCity = name => {
-    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
-      alert('City exists');
-      return;
-    }
-    createCity({ text: name }).then(({ data }) => {
-      const newCity = {
-        ...data,
-        relation: 'cities',
-      };
-      setCities([...cities, newCity]);
-      setShowForm(null);
-    });
-  };
-
   const addDepartment = name => {
-    if (departments.some(department => department.text.toLowerCase() === name.toLowerCase())) {
+    if (
+      departments.some(
+        department => department.text.toLowerCase() === name.toLowerCase()
+      )
+    ) {
       alert('Department exists');
       return;
     }
@@ -80,13 +71,7 @@ function App() {
   };
 
   const handleDeleteCard = (id, relation) => {
-    if (relation === 'cities') {
-      deleteCity(id).then(res => {
-        const resId = res.data.id;
-        const newCitiesArray = cities.filter(el => el.id !== resId);
-        setCities(newCitiesArray);
-      });
-    } else {
+    if (relation !== 'cities') {
       deleteDepartment(id).then(res => {
         const resId = res.data.id;
         const newDepartmentsArray = departments.filter(el => el.id !== resId);
@@ -98,36 +83,19 @@ function App() {
   const handleEditCard = data => {
     const { id, relation, name } = data;
 
-    if (relation === 'cities') {
-      updateCity(id, { id, text: name }).then(res => {
-        const updatedId = res.data.id;
-        const indexCity = cities.findIndex(item => item.id === updatedId);
-        setCities(prev => [
-          ...prev.slice(0, indexCity),
-          { text: res.data.text, relation, id: updatedId },
-          ...prev.slice(indexCity + 1),
-        ]);
-      });
-    } else {
+    if (relation !== 'cities') {
       updateDepartment(id, { id, text: name }).then(res => {
         const updatedId = res.data.id;
-        const indexDepartment = departments.findIndex(item => item.id === updatedId);
-        setCities(prev => [
+        const indexDepartment = departments.findIndex(
+          item => item.id === updatedId
+        );
+        setDepartments(prev => [
           ...prev.slice(0, indexDepartment),
           { text: res.data.name, relation, id: updatedId },
           ...prev.slice(indexDepartment + 1),
         ]);
       });
     }
-
-    // const elemIndex = this.state[relation].findIndex(item => item.text === id);
-    // this.setState(prev => ({
-    //   [relation]: [
-    //     ...prev[relation].slice(0, elemIndex),
-    //     { text: name, relation },
-    //     ...prev[relation].slice(elemIndex + 1),
-    //   ],
-    // }));
   };
   return (
     <div className="app">
@@ -143,9 +111,7 @@ function App() {
                   onDelete={onDelete}
                   showForm={showForm}
                   handleShowForm={handleShowForm}
-                  cities={cities}
                   handleEditCard={handleEditCard}
-                  addCity={addCity}
                 />
               }
             />
@@ -163,8 +129,14 @@ function App() {
                   />
                 }
               />
-              <Route path=":departmentId" element={<DepartmentDetails departments={departments} />}>
-                <Route path="description" element={<DepartmentsDescription />} />
+              <Route
+                path=":departmentId"
+                element={<DepartmentDetails departments={departments} />}
+              >
+                <Route
+                  path="description"
+                  element={<DepartmentsDescription />}
+                />
                 <Route path="history" element={<DepartmentsHistory />} />
               </Route>
             </Route>

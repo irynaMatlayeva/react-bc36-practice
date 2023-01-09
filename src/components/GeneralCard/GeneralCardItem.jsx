@@ -15,6 +15,11 @@ import {
 import { Modal } from 'components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import {
+  deleteCitiesOperation,
+  editCitiesOperation,
+} from 'store/cities/operations';
 
 function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -27,6 +32,7 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   const [showModal, setShowModal] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onClickToId = () => {
     if (relation !== 'departments') return;
@@ -96,7 +102,15 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
             <h2>
               Delete {relation === 'departments' ? 'department' : 'city'}{' '}
             </h2>
-            <button onClick={() => deleteCard(id, relation)}>Yes</button>
+            <button
+              onClick={() => {
+                relation === 'cities'
+                  ? dispatch(deleteCitiesOperation(id))
+                  : console.log('department');
+              }}
+            >
+              Yes
+            </button>
             <button onClick={closeModal}>No</button>
           </ModalActionContainer>
         </Modal>
@@ -105,7 +119,7 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
         <Modal onClose={closeModal}>
           <ModalActionContainer>
             <AddItemForm
-              onSubmit={editCard}
+              onSubmit={editCitiesOperation}
               title={
                 relation === 'departments' ? 'Edit department' : 'Edit city'
               }
