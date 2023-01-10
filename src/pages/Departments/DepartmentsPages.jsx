@@ -16,7 +16,6 @@ const DepartmentsPages = ({
   handleDeleteCard,
   handleEditCard,
   showForm,
-  addDepartment,
   handleShowForm,
 }) => {
   const dispatch = useDispatch();
@@ -26,6 +25,7 @@ const DepartmentsPages = ({
     dispatch(fetchDepartmentsOperation());
   }, [dispatch]);
 
+  console.log('show form', showForm);
   return (
     <>
       <Section title="Departments" image={DepartmentIcon}>
@@ -43,7 +43,11 @@ const DepartmentsPages = ({
         )}
 
         <Button
-          text={showForm === FORMS.DEPARTMENTS_FORM ? 'Close form' : 'Add department'}
+          text={
+            showForm === FORMS.DEPARTMENTS_FORM
+              ? 'Close form'
+              : 'Add department'
+          }
           image={AddIcon}
           action={() => handleShowForm(FORMS.DEPARTMENTS_FORM)}
         />

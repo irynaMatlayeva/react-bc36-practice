@@ -23,12 +23,6 @@ export const createCitiesOperation = createAsyncThunk(
   async (cityName, thunkAPI) => {
     try {
       const { data } = await createCity({ text: cityName });
-      //   const cities = useSelector(state => state.cities.cities);
-      //   if (
-      //     cities.some(city => city.text.toLowerCase() === data.text.toLowerCase())
-      //   ) {
-      //     return;
-      //   }
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

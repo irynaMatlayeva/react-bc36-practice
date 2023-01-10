@@ -6,7 +6,15 @@ import { ErrMsg } from '../TutorForm/TutorForm.styled';
 import { object, string } from 'yup';
 import { useDispatch } from 'react-redux';
 
-function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem, closeModal }) {
+function AddItemForm({
+  onSubmit,
+  title,
+  placeholder,
+  idItem,
+  relation,
+  textItem,
+  closeModal,
+}) {
   const INITIAL_VALUES = {
     name: textItem || '',
   };
@@ -17,12 +25,14 @@ function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem,
   const dispatch = useDispatch();
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    if (!values.name) {
-      alert('Поля форми не можуть бути пустими');
-      return;
-    }
+    // if (!values.name) {
+    //   alert('Поля форми не можуть бути пустими');
+    //   return;
+    // }
     setSubmitting(true);
-    const data = idItem ? { id: idItem, relation, name: values.name } : values.name;
+    const data = idItem
+      ? { id: idItem, relation, name: values.name }
+      : values.name;
     dispatch(onSubmit(data));
     closeModal();
     resetForm();
@@ -52,7 +62,11 @@ function AddItemForm({ onSubmit, title, placeholder, idItem, relation, textItem,
                 <ErrMsg name="name" component="div" />
               </div>
             }
-            <Button text={idItem ? 'Save' : 'Add'} image={AddIcon} type="submit" />
+            <Button
+              text={idItem ? 'Save' : 'Add'}
+              image={AddIcon}
+              type="submit"
+            />
           </div>
         </Form>
       )}
