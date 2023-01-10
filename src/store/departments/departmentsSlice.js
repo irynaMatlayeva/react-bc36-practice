@@ -5,6 +5,7 @@ const {
   fetchDepartmentsOperation,
   createDepartmentsOperation,
   deleteDepartmentsOperation,
+  editDepartmentsOperation,
 } = require('./operations');
 
 const initialState = {
@@ -30,7 +31,9 @@ const departmentsSlice = createSlice({
       .addCase(createDepartmentsOperation.fulfilled, (state, { payload }) => {
         const department = convertToFrontDepartment(payload);
         if (
-          state.departments.some(dep => dep.text.toLowerCase() === department.text.toLowerCase())
+          state.departments.some(
+            dep => dep.text.toLowerCase() === department.text.toLowerCase()
+          )
         ) {
           Notify.warning(`${department.text} already exists`);
           return state;
@@ -39,9 +42,18 @@ const departmentsSlice = createSlice({
           state.departments.unshift(department);
         }
       })
-      .addCase(deleteDepartmentsOperation.fulfilled, (state, { payload: { id, name } }) => {
-        Notify.success(`Видалили депертмент (${name})`);
-        state.departments = state.departments.filter(dep => dep.id !== id);
+      .addCase(
+        deleteDepartmentsOperation.fulfilled,
+        (state, { payload: { id, name } }) => {
+          Notify.success(`Видалили депертмент (${name})`);
+          state.departments = state.departments.filter(dep => dep.id !== id);
+        }
+      )
+      .addCase(editDepartmentsOperation.fulfilled, (state, { payload }) => {
+        const department = convertToFrontDepartment(payload);
+        state.departments = state.departments.map(item =>
+          item.id === department.id ? department : item
+        );
       });
   },
 });

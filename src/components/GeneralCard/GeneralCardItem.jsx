@@ -16,10 +16,16 @@ import { Modal } from 'components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { deleteCitiesOperation, editCitiesOperation } from 'store/cities/operations';
-import { deleteDepartmentsOperation } from 'store/departments/operations';
+import {
+  deleteCitiesOperation,
+  editCitiesOperation,
+} from 'store/cities/operations';
+import {
+  deleteDepartmentsOperation,
+  editDepartmentsOperation,
+} from 'store/departments/operations';
 
-function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
+function GeneralCardItem({ text, id, relation }) {
   const [showDropDown, setShowDropDown] = useState(false);
   const [dropDownPosition, setDropDownPosition] = useState({
     x: 0,
@@ -39,6 +45,7 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   };
 
   const showDropDawn = evt => {
+    evt.stopPropagation();
     setShowDropDown(true);
     setDropDownPosition({
       x: evt.clientX,
@@ -59,7 +66,6 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
   const handleActionBtnClick = action => {
     setShowModal(action);
     setShowDropDown(false);
-    // this.setState({ showModal: action, showDropDown: false });
   };
 
   return (
@@ -77,11 +83,17 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
               clientWidth={dropDownPosition.clientWidth}
               clientHeight={dropDownPosition.clientHeight}
             >
-              <StyledButton type="button" onClick={() => handleActionBtnClick('edit')}>
+              <StyledButton
+                type="button"
+                onClick={() => handleActionBtnClick('edit')}
+              >
                 <EditBtnIcon />
                 Edit
               </StyledButton>
-              <StyledButton type="button" onClick={() => handleActionBtnClick('delete')}>
+              <StyledButton
+                type="button"
+                onClick={() => handleActionBtnClick('delete')}
+              >
                 <DeleteBtnIcon />
                 Delete
               </StyledButton>
@@ -92,7 +104,9 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
       {showModal === 'delete' && (
         <Modal onClose={closeModal}>
           <ModalActionContainer>
-            <h2>Delete {relation === 'departments' ? 'department' : 'city'} </h2>
+            <h2>
+              Delete {relation === 'departments' ? 'department' : 'city'}{' '}
+            </h2>
             <button
               onClick={() => {
                 relation === 'cities'
@@ -110,8 +124,14 @@ function GeneralCardItem({ text, id, relation, deleteCard, editCard }) {
         <Modal onClose={closeModal}>
           <ModalActionContainer>
             <AddItemForm
-              onSubmit={editCitiesOperation}
-              title={relation === 'departments' ? 'Edit department' : 'Edit city'}
+              onSubmit={
+                relation === 'departments'
+                  ? editDepartmentsOperation
+                  : editCitiesOperation
+              }
+              title={
+                relation === 'departments' ? 'Edit department' : 'Edit city'
+              }
               idItem={id}
               relation={relation}
               textItem={text}
