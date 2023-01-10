@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/react-bc36-practice/static/css/main.7f49a32c.css",
-    "main.js": "/react-bc36-practice/static/js/main.e0075e8e.js",
-    "static/media/cities.svg": "/react-bc36-practice/static/media/cities.7e91992755f9d3b640efb7ac8c2b6491.svg",
-    "static/media/mock-university.svg": "/react-bc36-practice/static/media/mock-university.650dfc1db07a57b5376badfdaf40c154.svg",
-    "static/media/faculties-icon.svg": "/react-bc36-practice/static/media/faculties-icon.12acb9717b7065272c8041de24eb490c.svg",
-    "static/media/delete.svg": "/react-bc36-practice/static/media/delete.677d38a82de5abc1f9234f87ea3bf592.svg",
-    "static/media/edit.svg": "/react-bc36-practice/static/media/edit.1ccf0f6fedc395fb09177a40acb5b5d3.svg",
-    "static/media/mock-user-ava.svg": "/react-bc36-practice/static/media/mock-user-ava.dc938224d592de20b85ec3d88f5d791b.svg",
-    "static/media/add.svg": "/react-bc36-practice/static/media/add.dcb4b4909419b12dce90addcd79f723a.svg",
-    "index.html": "/react-bc36-practice/index.html",
-    "static/media/pin.svg": "/react-bc36-practice/static/media/pin.8da6e254540f5c534fe27e4d5af9e0f6.svg",
-    "static/media/phone.svg": "/react-bc36-practice/static/media/phone.c6f983dd4eca048e70183bd671671b90.svg",
-    "static/media/mail.svg": "/react-bc36-practice/static/media/mail.fcd39ac88773a1300db151e083154d3e.svg",
-    "main.7f49a32c.css.map": "/react-bc36-practice/static/css/main.7f49a32c.css.map",
-    "main.e0075e8e.js.map": "/react-bc36-practice/static/js/main.e0075e8e.js.map"
+    "main.css": "/static/css/main.7f49a32c.css",
+    "main.js": "/static/js/main.7a7d7881.js",
+    "static/media/cities.svg": "/static/media/cities.7e91992755f9d3b640efb7ac8c2b6491.svg",
+    "static/media/mock-university.svg": "/static/media/mock-university.650dfc1db07a57b5376badfdaf40c154.svg",
+    "static/media/faculties-icon.svg": "/static/media/faculties-icon.12acb9717b7065272c8041de24eb490c.svg",
+    "static/media/delete.svg": "/static/media/delete.677d38a82de5abc1f9234f87ea3bf592.svg",
+    "static/media/edit.svg": "/static/media/edit.1ccf0f6fedc395fb09177a40acb5b5d3.svg",
+    "static/media/mock-user-ava.svg": "/static/media/mock-user-ava.dc938224d592de20b85ec3d88f5d791b.svg",
+    "static/media/add.svg": "/static/media/add.dcb4b4909419b12dce90addcd79f723a.svg",
+    "static/media/pin.svg": "/static/media/pin.8da6e254540f5c534fe27e4d5af9e0f6.svg",
+    "index.html": "/index.html",
+    "static/media/phone.svg": "/static/media/phone.c6f983dd4eca048e70183bd671671b90.svg",
+    "static/media/mail.svg": "/static/media/mail.fcd39ac88773a1300db151e083154d3e.svg",
+    "main.7f49a32c.css.map": "/static/css/main.7f49a32c.css.map",
+    "main.7a7d7881.js.map": "/static/js/main.7a7d7881.js.map"
   },
   "entrypoints": [
     "static/css/main.7f49a32c.css",
-    "static/js/main.e0075e8e.js"
+    "static/js/main.7a7d7881.js"
   ]
 }
